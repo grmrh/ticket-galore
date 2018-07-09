@@ -1,0 +1,20 @@
+<tr>
+    <td>{{ticket_name}}</td>
+    <td>{{location}}</td>  
+    <td>{{price}}</td>
+    <td>{{user.displayName}}</td>
+    <td>{{description}}</td>
+    <td><button type="button" class="edit-ticket btn btn-primary"        
+          data-ticket_id="{{this.ticket_id}}" data-ticket_name="{{this.ticket_name}}" 
+          data-location="{{this.location}}" data-description="{{this.description}}"
+          data-price="{{this.price}}" data-owner_name="{{this.user.displayName}}"
+          data-user_id="{{this.user_id}}" data-lookup_event_id="{{this.lookup_event_id}}"
+          data-image_stored_at="{{this.lookup_event.image_stored_at}}"
+          data-image_name="{{this.lookup_event.image_name}}"
+          data-event_name="{{this.lookup_event.event_name}}"
+          >Edit</button></td>
+   <td><button type="button" class="takeback-ticket" data-ticket_id="{{this.ticket_id}}">Take back</button></td>  
+   
+</tr>
+
+{{!-- data-toggle="modal" data-target="#putInMarketModalForm" --}}

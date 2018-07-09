@@ -1,0 +1,19 @@
+<li>
+  <div class="row">
+    <div class="col-md-2">{{ticket_name}}</div>
+    <div class="col-md-2">{{location}}</div>
+    <div class="col-md-2">{{description}}</div>
+    <div class="col-md-2">{{price}}</div>
+    <div class="col-md-2">{{user.displayName}}</div>
+    <div class="col-md-2"><button  class="trade-ticket" id="offerInMarket" 
+          data-ticket_id="{{this.ticket_id}}" data-ticket_name="{{this.ticket_name}}"  
+          data-location="{{this.location}}" data-description="{{this.description}}"  
+          data-price="{{this.price}}" data-owner_name="{{this.user.displayName}}" 
+          data-user_id="{{this.user_id}}" data-lookup_event_id="{{this.lookup_event_id}}" 
+          data-image_stored_at="{{this.lookup_event.image_stored_at}}" 
+          data-image_name="{{this.lookup_event.image_name}}" 
+          data-event_name="{{this.lookup_event.event_name}}" 
+          >Offer</button>
+    {{!-- <button class="buy-ticket" data-ticket_id="{{this.ticket_id}}">Buy</button></div> --}}
+  </div>
+</li>

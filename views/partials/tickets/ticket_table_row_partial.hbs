@@ -1,0 +1,78 @@
+<tr>
+    <td>{{ticket_name}}</td>
+    <td>{{location}}</td>  
+    <td>{{price}}</td>
+    <td>{{user.displayName}}</td>
+    <td>{{description}}</td>
+    <td><button type="button" class="trade-ticket btn btn-primary"        
+          data-ticket_id="{{this.ticket_id}}" data-ticket_name="{{this.ticket_name}}" 
+          data-location="{{this.location}}" data-description="{{this.description}}"
+          data-price="{{this.price}}" data-owner_name="{{this.user.displayName}}"
+          data-user_id="{{this.user_id}}" data-lookup_event_id="{{this.lookup_event_id}}"
+          data-image_stored_at="{{this.lookup_event.image_stored_at}}"
+          data-image_name="{{this.lookup_event.image_name}}"
+          data-event_name="{{this.lookup_event.event_name}}"
+          >Put in Market</button></td>
+    {{!-- <button class="buy-ticket" data-ticket_id="{{this.ticket_id}}">Buy</button><<td>  data-toggle="modal" data-target="#putInMarketModalForm" --}}
+
+</tr>
+
+
+
+{{!-- Put in market modal form --}}
+{{!-- <div id = "putInMarketModalForm" class="modal fade">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">Add a ticket to market place</h1>
+      </div>
+      <div class="modal-body">
+        <form role="form">
+          <fieldset>
+            <legend></legend>
+            <div class="form-group">
+              <label class="form-control-label" for="email">Email address</label>
+              <input type="email" class="form-control-lg" id="email" name="email" placeholder="Enter your email address" >
+            </div>
+            <div class="form-group">
+              <label class="form-control-label" for="ticket_name">Ticket name</label>
+              <div class="btn-group ticket-name-dropdown">
+                <button type="button" class="btn btn-light btn-ticket-name" id="ticket_name" name="ticket_name">Select ticket name</button>
+                <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu ticket-name-dropdown-menu" id="ticket-dropdown">
+                  <ul class="list-unstyled">
+                    {{#each lookupEvents}}
+                    <li>
+                      <a class="dropdown-item" data-lookupeventid={{lookup_event_id}}>{{event_name}}</a>
+                    </li>
+                    {{/each}}
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-control-label" for="location">Location</label>
+              <input type="text" class="form-control-lg" id="location" name="location" placeholder="Enter a location" >
+            </div>
+            <div class="form-group">
+              <label class="form-control-label" for="price">Price</label>
+              <input type="text" class="form-control-lg" id="price" name="price" placeholder="Enter a ticket price" >
+            </div>
+            <div class="form-group">
+              <label class="form-control-label" for="description">Description</label>
+              <input type="text" class="form-control-lg" id="description" name="description" placeholder="Enter a ticket description" >
+            </div>
+          </fieldset>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="trade-ticket">Put in Market</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> --}}
+

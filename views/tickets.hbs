@@ -1,0 +1,358 @@
+ {{!-- Put in market modal form --}}
+<div id="putInMarketModalForm" class="modal fade">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Do you want to put this ticket to market place?</h4>
+      </div>
+      <div class="modal-body">
+        <p>You are about to put this ticket to the trade market. Click "Yes" to do so, otherwise click "Cancel."</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="trade-ticket">Yes, put in Market</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand displayName" href="#">
+      <h1>Tickets Galore
+        <sup>&reg;</sup>
+      </h1>
+    </a>
+    <input type="hidden" id="userId" name="userId" value={{signedin_user.user_id}}>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav mr-auto">
+        {{!--
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li> --}}
+        <li class="nav-item">
+          <a class="nav-link displayName" href="#">
+            <h5>{{signedin_user.displayName}}</h5>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">sign out</a>
+        </li>
+      </ul>
+      <button type="button" id="pbutton" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        show ticket category
+      </button>
+      {{!--
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search">
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+      </form> --}}
+      <form id="labnol" class="form-inline" method="get" action="https://www.google.com/search">
+        <input class="form-control mr-sm-2" type="text" name="q" id="transcript" placeholder="Search / Speak">
+        <img onclick="startDictation()" src="//i.imgur.com/cHidSVu.gif">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+{{!-- search by user preferred ticket --}}
+<section>
+  <div class="container prefDiv">
+    <div class="row p-2 border border-dark">
+      {{!-- user preferernce --}}
+      <div class="tag ">
+        <h3 class="mt-5 p-10">Search tickets-in-trade by ticket name</h3>
+        <div class=" col col-md-12">
+          <ul id="menu">
+            {{#each userInterests}}
+            <li>
+              <input type="radio" name="pref" value="{{lookup_event.event_name}}">
+              <img src="{{lookup_event.image_stored_at}}" alt height="10%" width="10%">
+            </li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{!-- all ticket trade cards --}}
+<section class="mt-5">
+  <div class="container mt-5">
+    <h3 class="tag mb-5">All tickets in market</h3>
+    <div class="header-bg">
+      <div id="preloader">
+        <div class="preloader">
+          <div class="row">
+            <div class=" col col-md-2-md-12 d-inline-block" id="ticket-card-list">
+              {{#each ticketTrades}} {{> tickets/ticket_trade_card_partial}} {{/each}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{!-- my ticket table --}}
+<section class="container-fluid bg-dark mt-5">
+  <div class="container">
+    <div class="mb-5">
+      <h3 class="tag mt-5 pt-5">{{signedin_user.displayName}} dashboard</h3>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <button type="button" class="btn btn-success btn-lg ticket-add">Add a ticket</button>
+      </div>
+      <div class="col-md-6">
+        <h3 class="tag">{{tickets.length}} tickets available to trade</h3>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope=" col col-md-2">Ticket name</th>
+          <th scope=" col col-md-2">Location</th>
+          <th scope=" col col-md-2">Price</th>
+          <th scope=" col col-md-2">Owner</th>
+          <th scope=" col col-md-2">Description</th>
+          <th scope=" col col-md-2"></th>
+        </tr>
+      </thead>
+      <tbody id="ticket-table">
+        {{#each tickets}} {{> tickets/ticket_table_row_partial}} {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+
+  {{!-- add a ticket to my ticket list --}}
+  <div class="container mt-5">
+    <div class="ticket-add-form d-none">
+      <div class="row">
+        <div class=" col col-md-2-md-6 ">
+          <form class="create-ticket-form">
+            <fieldset>
+              <legend>
+                <h3 class="tag">Add a ticket</h3>
+              </legend>
+              <div class="form-group">
+                <label class="form-control-label" for="email"></label>
+                <input type="text" id="email" name="email" placeholder="Enter your email address" class="form-control-lg">
+              </div>
+              <div class="form-group">
+                <label class="form-control-label" for="ticket_name"></label>
+                <div class="btn-group btn-group-lg ticket-name-dropdown">
+                  <button type="button" class="btn btn-light btn-ticket-name inline-block width-300px" id="ticket_name" name="ticket_name">Select ticket name</button>
+                  <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu ticket-name-dropdown-menu" id="ticket-dropdown">
+                    <ul class="list-unstyled">
+                      {{#each lookupEvents}}
+                      <li>
+                        <a class="dropdown-item inline-block width-300px" data-lookupeventid={{lookup_event_id}}>{{event_name}}</a>
+                      </li>
+                      {{!-- {{> tickets/lookup_event_menu_item_partial}} --}} {{/each}}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-control-label" for="location"></label>
+                <input type="text" id="location" name="location" placeholder="Enter a location" class="form-control-lg">
+              </div>
+              <div class="form-group">
+                <label class="form-control-label" for="price"></label>
+                <input type="text" id="price" name="price" placeholder="Enter a ticket price" class="form-control-lg">
+              </div>
+              <div class="form-group">
+                <label class="form-control-label" for="description"></label>
+                <input type="text" id="description" name="description" placeholder="Enter a ticket description" class="form-control-lg">
+              </div>
+            </fieldset>
+            <button type="button" class="btn btn-primary btn-lg mb-3 create-ticket-form-reset">Reset</button>
+            <button type="button" class="btn btn-primary btn-lg mb-3 create-ticket-form-cancel">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-lg mb-3">Add</button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{!-- my tickets in trade --}}
+  <div class="container">
+    <div class="container mt-3">
+      <div class="row">
+        <div id="userTradeHistory" class="col col-md-2-6 justify-content-end">
+          <h3 class="tag mt-3">{{signedin_user.displayName}}'s Trade in progress </h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope=" col col-md-2">Ticket name</th>
+                <th scope=" col col-md-2">Bid status</th>
+                <th scope=" col col-md-2">Location</th>
+                <th scope=" col col-md-2">Price</th>
+                <th scope=" col col-md-2">Bid price</th>
+                <th scope=" col col-md-2">Owner</th>
+                <th scope=" col col-md-2">Description</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody id="ticket-table">
+              {{#each myTicketTrades}}
+              <tr>
+                <td>{{ticket_name}}</td>
+                <td>{{bid_status}}</td>
+                <td>{{location}}</td>
+                <td>{{price}}</td>
+                <td>{{bid_price}}</td>
+                <td>{{user.displayName}}</td>
+                <td>{{description}}</td>
+                <td>
+                  <button type="button" class="edit-trade-ticket btn btn-primary" data-ticket_id="{{this.ticket_trade_id}}">Edit</button>
+                </td>
+                <td>
+                  <button type="button" class="takeback-trade-ticket btn btn-primary" data-ticket_id="{{this.ticket_trade_id}}">Take back</button>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{!-- my ticket trade history --}}
+  <div class="container">
+    <div class="container mt-5">
+      <div class="row">
+        <div id="userTradeHistory" class=" col col-md-2-6 justify-content-end">
+          <h3 class="tag">{{signedin_user.displayName}}'s Trade history and in-progress</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope=" col col-md-2">Ticket name</th>
+                <th scope=" col col-md-2">Location</th>
+                <th scope=" col col-md-2">Price</th>
+                <th scope=" col col-md-2">Owner</th>
+                <th scope=" col col-md-2">Description</th>
+              </tr>
+            </thead>
+            <tbody id="ticket-table">
+              {{#each myTicketTrades}}
+              <tr>
+                <td>{{ticket_name}}</td>
+                <td>{{location}}</td>
+                <td>{{price}}</td>
+                <td>{{user.displayName}}</td>
+                <td>{{description}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{!-- my preferred team ticket --}}
+<section>
+  <footer class="footer navbar-fixed-bottom mt-5">
+    {{! bottom section: user-specific info !}}
+    <div class="container">
+
+      <div class="container prefDiv ">
+        <div class="row justify-content-start p-2">
+          {{!-- user preferernce --}}
+          <div class="tag">
+            <h3>{{signedin_user.displayName}}'s preferred team selection</h3>
+            <div class=" col col-md-12">
+              <ul id="menu">
+                {{#each userInterests}}
+                <li>
+                  <input type="radio" name="pref" value="{{lookup_event.event_name}}">
+                  <img src="{{lookup_event.image_stored_at}}" alt height="10%" width="10%">
+                </li>
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row  justify-content-center border border-dark text-center">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="button">Button</button>
+          </div>
+          <input type="text" class="form-control" placeholder="Submit your ticket to sell here" aria-label="" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="button">Button</button>
+          </div>
+          <input type="text" class="form-control" placeholder="Submit your bid here" aria-label="" aria-describedby="basic-addon1">
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container">
+      <p class="text-center" id="footer-copy">&copy; 2017 Tickets Galore Co. All Rights Reserved.</p>
+    </div>
+  </footer>
+</section>
+
+{{!-- logo modal --}}
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <td>
+                <div class="row test123">
+                  <!-- icons for the modal loaded dynamiclly -->
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button id="submit" class="btn btn-danger" data-dismiss="modal">Add to search category</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{{!-- something submit that I do not know about??? --}} {{!--
+<div class="container">
+  <div class="download bg-primary text-center" id="download">
+    <form class=" col col-md-2 form-group form-inline">
+      <button type="submit" id="submit-btn" class=" btn btn-primary">Submit</button>
+      <label for="exampleInputPassword1">Find events near you!</label>
+      <input type="text" class="form-control m-2" id="eventInput" placeholder="look up an event">
+    </form>
+  </div>
+</div> --}}

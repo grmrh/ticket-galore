@@ -1,0 +1,20 @@
+<!-- ticket cards belong to me -->
+<div class="card mb-3 d-inline-block">
+  <h3 class="card-header">{{ticket_name}}</h3>
+  <div class="card-body">
+    <h5 class="card-title">{{location}}</h5>
+  </div>
+  <img style="height: 200px; width: 200px; display: block;" src="{{image_stored_at}}" alt="Card image">
+  <div class="card-body">
+    <h6 class="card-text">{{description}}</h6>
+  </div>
+ 
+  <div class="card-body">
+    <h4>${{bid_price}}</h4>
+    <a href="#" class="card-link">owner</a>
+    <a href="#" class="card-link">profile</a>
+  </div>
+  <div class="card-footer text-muted">
+    last bid: {{formatDate bid_time "long"}};
+  </div>
+</div>
