@@ -7,7 +7,7 @@
     "host": "127.0.0.1",
     "password": "root"
   },
-  "heroku": {
+  "production": {
     "database": "j8xzo77rs6w0oh4l",
     "port": 3306,
     "dialect": "mysql",
@@ -23,7 +23,7 @@
     "port": 3306,
     "dialect": "mysql"
   },
-  "production": {
+  "heroku_production": {
     "use_env_variable": "JAWSDB_URL",
     "dialect": "mysql"
   }
