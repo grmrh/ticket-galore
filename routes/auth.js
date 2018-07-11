@@ -151,10 +151,16 @@ module.exports = (app, passport) => {
     done(null, sessionUser);
   });
 
+  var callbackURL;
+  if (process.env.NODE_ENV == "heroku_production") {
+    callbackURL = 'https://pacific-fortress-96034.herokuapp.com/auth/google/callback';
+  } else {
+    callbackURL = 'http://localhost:8080/auth/google/callback';
+  }
   passport.use(new GoogleStrategy({
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: '/auth/google/callback',
+      callbackURL: callbackURL,
       passReqToCallback: true
     },
     (request, accessToken, refreshToken, profile, done) => {
