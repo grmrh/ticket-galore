@@ -1,6 +1,3 @@
-
-
-
 /*
     // sequelize does have datatype value TIMESTAMP. add this column aftr the User table is created.
     // created_dt: {
@@ -8,9 +5,11 @@
     //   allowNull: false, 
     //   defaultValue: CURRENT_TIMESTAMP
     // }
-
     */
-
+    
+/*
+* fill lookup table
+*/
 insert into lookup_events
   (event_name, description, image_name, image_stored_at) VALUES
   ('Vikings', 'The best in mid-west', 'vikings', '/images/pref_imgs/vikings.png');
