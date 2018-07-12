@@ -103,14 +103,90 @@ $(function () {
 
       });
 
-      $(".edit-trade-ticket").on("click", function(event) {
+      // $(".edit-trade-ticket").on("click", function(event) {
 
+      // })
+
+      // member can withdraw the ticket from the market.
+      $(document).on("click", ".takeback-trade-ticket", function(event) {
+        //event.preventDefault();
+        $("#ticketNameToRemove").text($(this).attr('data-ticketname'));
+        var ticket_trade_id = $(this).data("tickettradeid");
+        $("#ticketTradeIdToRemove").text(ticket_trade_id);
+        // var ticket_name = $(this).data("ticket_name");
       })
 
-      $(".takeback-trade-ticket").on("click", function(event) {
+      $('#trade-ticket-takeback').on('click', function(e) {
+        e.preventDefault();
+      
+        var ticketTradeId = $("#ticketTradeIdToRemove").text();
+        var data = {
+          ticket_trade_id: ticketTradeId
+        }
+        $.ajax({
+          url: "/api/tickets/ticketTrade/" + ticketTradeId,
+          method: "DELETE",
+        }).then(function(ticketTradseDeleted) {
 
-      })
-      // ----------------------------------------------------------------------
+          location.reload();          
+        })     
+      });    
+          
+       
+      // open takeback modal
+      // $(document).on('show.bs.modal', '.ticketTradeTakebackFormModal', function(event) {
+
+      //   event.preventDefault();
+      //   var ticket_trade_id = $(this).data("ticket_trade_id");
+      //   $.ajax({
+      //     url: "/api/ticketTrades/" + ticket_trade_id,
+      //     method: "GET"
+      //   }).then(function(ticketTrade) {
+
+      //     $(this).parents(".modal-header").find('#ticketNameToRemove').text(`${ticketTrade.ticket_name}`);
+      //       //console.log("Offer in Market: created ticket_trade entry \n", ticketTrade.ticket_name);
+      //     location.reload();
+
+      //     })         
+                 
+      // })
+
+
+
+      // open modal
+      $(document).on('show.bs.modal', 'ticketTradeEditFormModal', function(event) {
+
+        var button = $(event.relatedTarget)
+        var id = button.data('ticket_trade_id');
+
+        $.ajax({
+          url:"/api/ticketTrades/" + id,
+          method: "GET"
+        }).then(function(ticketTrade) {
+
+          console.log(ticketTrade.ticket_name);
+          var ticketName = ticketTrade[0].ticket_name;
+          var location = ticketTrade[0].location;
+          var price = ticketTrade[0].price;
+          var bidPrice = ticketTrade[0].bid_price;
+          var description = ticketTrade[0].description;
+
+          var modal = $(this);
+          modal.find('.modal-title').text('You can update ticket, ' + ticketName + ', properties.');
+          modal.find('#location').attr('placeholder', location);
+          modal.find('#price').attr('placeholder', price);
+          modal.find('#bid_price').attr('placeholder', bidPrice);
+          modal.find('#description').attr('placeholder', description);
+
+        }).then(function() {
+
+        })
+      });
+
+
+
+      
+      // // ----------------------------------------------------------------------
       // transition background images
       var images = [
         "https://blog.roblox.com/wp-content/uploads/2017/09/Sports-Event-Banner_1920x1080_v01.jpg",
@@ -150,7 +226,7 @@ $(function () {
       var logoImage = [
         "/images/pref_imgs/vikings.png",
         "/images/pref_imgs/twins.png",
-        "/images/pref_imgs/wolves.png",
+        "/images/pref_imgs/timberwolves.png",
         "/images/pref_imgs/wild.png",
         "/images/pref_imgs/united.png",
         "/images/pref_imgs/saints.png",
@@ -161,7 +237,7 @@ $(function () {
       var logoImageName = [
         "Vikings",
         "Twins",
-        "Wolves",
+        "Timberwolves",
         "Wilds",
         "United",
         "Saints",
@@ -182,7 +258,7 @@ $(function () {
         {
           logoName: "Timberwolves",
           logoId: 8,
-          imageStoredAt: "/images/pref_imgs/wolves.png"
+          imageStoredAt: "/images/pref_imgs/timberwolves.png"
         },
         {
           logoName: "Wilds",
@@ -251,7 +327,7 @@ $(function () {
       var logoImage = [
         "/images/pref_imgs/vikings.png",
         "/images/pref_imgs/twins.png",
-        "/images/pref_imgs/wolves.png",
+        "/images/pref_imgs/timberwolves.png",
         "/images/pref_imgs/wild.png",
         "/images/pref_imgs/united.png",
         "/images/pref_imgs/saints.png",
@@ -262,7 +338,7 @@ $(function () {
       var logoImageName = [
         "Vikings",
         "Twins",
-        "Wolves",
+        "Timberwolves",
         "Wilds",
         "United",
         "Saints",
@@ -280,7 +356,7 @@ $(function () {
 
           $(".test123").append(`<div class="img_container userPreferenceLogo">
             <input type="radio" name="pref" value="${logoImageName[i]}">
-            <img src="${logoImage[i]}" alt="${logoImageName[i]}" id = "${imageClass}" class="image">
+            <button class="imageButtonToFilter" ><img src="${logoImage[i]}" alt="${logoImageName[i]}" id = "${imageClass}" class="image"></button>
             <div class="middle">
             <div class="text">${logoImageName[i]}</div>
             </div>

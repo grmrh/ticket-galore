@@ -158,6 +158,15 @@ exports.userInterestsByUserId = function(req, res) {
     res.json(dbUserInterests);
   });
 
+  exports.ticketsTicketTradeDelete = function(req, res) {
+    var ticketTradeIdToDelete = req.params.id;
+
+    db.ticketTrade.destroy({
+      where: {
+        ticket_trade_id: ticketTradeIdToDelete
+      }
+    }).then(dbTickets => res.json(dbTickets));
+  }
  
   
 }

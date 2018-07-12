@@ -45,6 +45,25 @@ exports.ticketTradeCreate = function (req, res) {
     })
 };
 
+// respond to DELETE /api/ticketTrades/:id
+exports.tickeTradetDelete = function (req, res) {
+  db.ticketTrade.destroy({
+    where: {
+      ticket_trade_id: req.params.id
+    }
+  }).then(dbTicketTrade => res.json(dbTicketTrade));
+}
+
+// respond to GET /api/ticketTrades/:id
+exports.tickeTradetGetById = function (req, res) {
+  db.ticketTrade.FindOne({
+    where: {
+      ticket_trade_id: req.params.id
+    }
+  }).then(dbTicketTrade => res.json(dbTicketTrade));
+}
+
+
 //respond to POST /api/tickets/tiketTrades
 // exports.ticketTradeCreate = function (req, res) {
 
