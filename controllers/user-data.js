@@ -3,6 +3,7 @@ const {table} = require('table');
 const sessionStorage = require('sessionstorage');
 
 class Users {
+  
   constructor() {
     this.usersAll = [];
     this.usersByUser = [];
@@ -42,14 +43,29 @@ class Users {
         }})
       .then (dbUser => {
         if (dbUser) {
-        //console.log("getUserByIdentity in user-data.js \n", dbUser.user_id);
-        //console.log("getUserByIdentity in user-data.js \n", dbUser.user);
-        //console.log("getUserByIdentity in user-data.js \n", dbUser.user[0]);
-        console.log("getUserByIdentity dbUser in user-data.js \n", dbUser);
-        this.userSelected = dbUser;
-        return dbUser;
+
+          //console.log("getUserByIdentity in user-data.js \n", dbUser.user);
+          console.log("getUserByUserIdentity dbUser in user-data.js \n", dbUser);
+          this.userSelected = dbUser;
+          return dbUser;
         }
         else 
+          return dbUser;
+      })
+      .catch(err => {
+        console.log(err.stack);
+        process.exit(1);
+      })
+  }
+
+  getUserByUserId(id) {
+    this.userSelected = null;
+    return db.user
+      .findOne({
+        where: {
+          user_id: id 
+        }})
+      .then (dbUser => {
           return dbUser;
       })
       .catch(err => {

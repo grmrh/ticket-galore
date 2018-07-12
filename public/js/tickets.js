@@ -46,16 +46,16 @@ $(function () {
 
       $(".ticket-add").on("click", function(event) {
         event.preventDefault();
-        $('.ticket-add-form').removeAttr(".d-none").attr("class", "ticket-add-form d-block");
+        $('.ticket-add-form').removeAttr(".d-none").attr("class", "ticket-add-form d-block").fadein(1000);
         // $('.ticket-add-form').removeAttr(".d-none").attr(".d-block");
       })
 
       $(".create-ticket-form-reset").on("click", function() {
-        $(".create-ticket-form").trigger("reset");
+        $(".create-ticket-form").trigger("reset").fadeout(1000);
       })
 
       $(".create-ticket-form-cancel").on("click", function() {
-        $(".ticket-add-form").removeAttr(".d-block").attr("class", "ticket-add-form d-none");
+        $(".ticket-add-form").removeAttr(".d-block").attr("class", "ticket-add-form d-none").fadeout(1000);
       })
 
       $(".trade-ticket").on("click", function(event) {

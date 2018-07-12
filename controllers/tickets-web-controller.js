@@ -6,13 +6,12 @@ var exports = module.exports = {};
 
 exports.tickets = function (req, res) {
 
-    console.log('Inside tickets web controller :', req.session.displayName);
-    var signedin_user = {
-      "user_id": req.session.user_id,
-      "email": req.session.email,
-      "displayName": req.session.displayName,
-      "user_identification": req.session.user_identification
-    }
+    console.log('Inside tickets web controller - req.session:', req.session.user);
+    // var signedin_user = {
+    //   "email": req.user.email,
+    //   "displayName": req.user.displayName,
+    //   "user_identification": req.user.id
+    // }
 
     var query = {};
     // check if "get by id" kind
@@ -28,32 +27,6 @@ exports.tickets = function (req, res) {
     var ticketTrades;
     var hbsObj;
 
-    const dataForTiketsWeb = async (req, res, next) => {
-      try {
-        lookupEvents = await db.lookup_event.findAll();
-        ticketsWithUserIdAndEventId = await db.ticket.findAll({
-          where: query,
-          include: [db.user, db.lookup_event]
-        });
-        myTickets = await db.ticket.findAll({
-          where: {
-            user_id: signedin_user.user_id
-          },
-          include: [db.user, db.lookup_event]
-        });
-
-        return hbsObj = {
-          tickets: ticketsWithUserIdAndEventId,
-          myTickets: myTickets,
-          lookupEvents: lookupEvents,
-          signedin_user: ''
-        };
-      } catch (err) {
-        console.log(err.stack());
-      }
-    }
-    dataForTiketsWeb();
-
     db.ticket.findAll({
         where: query,
         include: [db.user, db.lookup_event, db.ticket_trade]
@@ -66,7 +39,8 @@ exports.tickets = function (req, res) {
         .then(function () {
           db.ticket.findAll({
               where: {
-                user_id: signedin_user.user_id
+                //user_id: signedin_user.user_id
+                user_id: req.session.user.user_id
               },
               include: [db.user, db.lookup_event, db.ticket_trade]
             })
@@ -78,7 +52,7 @@ exports.tickets = function (req, res) {
             .then(function () {
               db.ticket_trade.findAll({
                   where: {
-                    bid_user_id: signedin_user.user_id
+                    bid_user_id: req.session.user.user_id
                   },
                   include: [db.user]
                 })
@@ -90,7 +64,7 @@ exports.tickets = function (req, res) {
             .then(function () {
               db.user_interest.findAll({
                   where: {
-                    user_id: signedin_user.user_id
+                    user_id: req.session.user.user_id
                   },
                   include: [db.user, db.lookup_event]
                 })
@@ -124,7 +98,7 @@ exports.tickets = function (req, res) {
                           lookupEvents: lookupEvents,
                           userInterests: userInterests,
                           ticketTrades: ticketTrades,
-                          signedin_user: signedin_user
+                          signedin_user: req.session.user
                         };
   
                         res.render('tickets', hbsObj);
@@ -135,3 +109,31 @@ exports.tickets = function (req, res) {
           })
       })
     }
+
+
+
+    // const dataForTiketsWeb = async (req, res, next) => {
+    //   try {
+    //     lookupEvents = await db.lookup_event.findAll();
+    //     ticketsWithUserIdAndEventId = await db.ticket.findAll({
+    //       where: query,
+    //       include: [db.user, db.lookup_event]
+    //     });
+    //     myTickets = await db.ticket.findAll({
+    //       where: {
+    //         user_id: signedin_user.user_id
+    //       },
+    //       include: [db.user, db.lookup_event]
+    //     });
+
+    //     return hbsObj = {
+    //       tickets: ticketsWithUserIdAndEventId,
+    //       myTickets: myTickets,
+    //       lookupEvents: lookupEvents,
+    //       signedin_user: ''
+    //     };
+    //   } catch (err) {
+    //     console.log(err.stack());
+    //   }
+    // }
+    // dataForTiketsWeb();

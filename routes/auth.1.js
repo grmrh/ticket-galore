@@ -4,6 +4,7 @@ const router = require('express').Router();
 const Users = require('../controllers/user-data');
 const User = require('../models/user');
 
+const path = require('path');
 // const querystring = require('querystring');
 // const url = require('url');
 //const express = require('express');
@@ -13,20 +14,82 @@ const User = require('../models/user');
 
 // module.exports = (passport) => {
 
+  
   router.get('/auth/google/callback',
     passport.authenticate('google', {
       failureRedirect: '/auth/signin'
     }), (req, res) => {
       // req.session.token = req.user.token;
       // console.log('user token ', req.user.token);
-
-      console.log('Inside redirect; ' + req.session.user.user_id);
-      console.log('inside auth ', req.session.user.displayName);
+      console.log('Inside redirect; ' + req.user);
+      console.log('inside auth ', req.user.displayName);
       res.redirect('/tickets');
+
+      // //console.log('user email ', req.user.profile.email);
+      // var userInfo = {
+      //   first_name: req.user.profile.name.givenName,
+      //   last_name: req.user.profile.name.familyName,
+      //   email: req.user.profile.email,
+      //   user_identity: req.user.profile.id, 
+      //   displayName: req.user.profile.displayName
+      // }
+
+      // console.log(userInfo);
+      // // check if user alreay in database
+      // //router.use(session({secret: 'super duper hidden', cookie: {maxAge: 60000}}));
+      // var users = new Users();
+
+      // user.getUserByUserIdentity(req.user.profile.id)
+      //   .then(dbUser => {
+      //     if (!users.userSelected) {
+      //       users.getUserByEmail(req.user.profile.eamil)
+      //         .then(dbUser => {
+      //           if (!users.userSelected) {
+      //             users.createUser(userInfo)
+      //               .then(dbUser => {
+      //                 //setSessionInfo(req.session, users.userInserted);
+      //                 req.session.user_id = users.userInserted.user_id;
+      //                 req.session.email = users.userInserted.email.toString();
+      //                 req.session.user_identity = users.userInserted.user_identity.toString();                  
+      //                 req.session.displayName = users.userInserted.displayName.toString();
+      //               })
+      //           } 
+      //           else{
+      //             //setSessionInfo(req.session, users.userSelected);
+      //             req.session.user_id = users.userSelected.user_id;
+      //             req.session.email = users.userSelected.email.toString();
+      //             req.session.user_identity = users.userSelected.user_identity.toString();                  
+      //             req.session.displayName = users.userSelected.displayName.toString();
+      //           }
+      //         })
+      //     } else{
+      //       //setSessionInfo(req.session, users.userSelected);
+      //       req.session.user_id = users.userSelected.user_id;
+      //       req.session.email = users.userSelected.email.toString();
+      //       req.session.user_identity = users.userSelected.user_identity.toString();                  
+      //       req.session.displayName = users.userSelected.displayName.toString();
+      //     }
+      //   }).then(() => req.session)
+      //     .then(reqs =>  {
+      //       console.log("Inside Auth: ", reqs.user_id, req.session.displayName, 
+      //         req.session.email, req.session.user_identity);
+      //       return req.session;
+      //     })
+      //     .then (reqs => {
+      //       res.redirect(url.format({
+      //         pathname: '/tickets',
+      //         query: {
+      //           "user_id": reqs.user_id,
+      //           "email": reqs.email,
+      //           "displayName": reqs.displayName,
+      //           "user_identification": reqs.user_identification
+      //       }}));
+      //     });
+
     }
   );
 
-
+  
   /*
   scope: ['https://www.googleapis.com/auth/plus.signin',
    'https://www.googleapis.com/auth/plus.me',
@@ -66,6 +129,11 @@ const User = require('../models/user');
   //   })
   // });
 
+  // router.get('/', ensureAuthenticated, (req, res) => {
+  //   res.render('/', {
+  //     user: req.user
+  //   });
+  // })
 
   // user.id is the id in user table
   passport.serializeUser((user, done) => {
@@ -100,24 +168,15 @@ const User = require('../models/user');
       callbackURL: callbackURL,
       passReqToCallback: true
     },
-    (req, accessToken, refreshToken, profile, done) => {
+    (request, accessToken, refreshToken, profile, done) => {
       // check if this user exists in the user table
       var users = new Users();
       users.getUserByUserIdentity(profile.id)
-      .then(currentUser => {
+      .then((currentUser) => {
         if(currentUser) {
           // found in the table
           console.log('user exists and is ' + currentUser);
-
-          var user = {
-            user_identity: currentUser.user_identity,
-            displayName: currentUser.displayName,
-            user_id: currentUser.user_id,
-            email: currentUser.email
-           }
-
-           req.session.user = user; 
-           done(null, currentUser);
+          done(null, currentUser);
 
         } else {
           // if not, create user
@@ -130,18 +189,8 @@ const User = require('../models/user');
           });
 
           users.createUser(newUser)
-           .then(newUser => {
+           .then((newUser) => {
              console.log('new user created: ' + newUser);
-
-             var user = {
-              user_identity: newUser.user_identity,
-              displayName: newUser.displayName,
-              user_id: newUser.user_id,
-              email: newUser.email
-             }
-
-             req.session.user = user;
-
              done(null, newUser);
            })
         }
@@ -150,5 +199,14 @@ const User = require('../models/user');
       
     })
   );
+
+  // function ensureAuthenticated(req, res, next) {
+  //   if (req.isAuthenticated()) {
+  //     return next();
+  //   }
+  //   res.redirect('/signin');
+  // }
+
+// };
 
 module.exports = router;
