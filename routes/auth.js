@@ -89,7 +89,7 @@ const User = require('../models/user');
 
   var callbackURL;
   if (process.env.NODE_ENV == "heroku_production") {
-    callbackURL = 'https://pacific-fortress-96034.herokurouter.com/auth/google/callback';
+    callbackURL = 'https://pacific-fortress-96034.herokuapp.com/auth/google/callback';
   } else {
     callbackURL = 'http://localhost:8080/auth/google/callback';
   }
