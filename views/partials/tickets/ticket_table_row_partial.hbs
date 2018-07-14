@@ -2,9 +2,9 @@
     <td>{{ticket_name}}</td>
     <td>{{location}}</td>  
     <td>{{price}}</td>
-    <td>{{user.displayName}}</td>
+    <td>{{#if ticket_trade_id}}Yes{{else}}No{{/if}}</td>
     <td>{{description}}</td>
-    <td><button type="button" class="trade-ticket btn btn-primary"        
+    <td><button type="button" class="trade-ticket btn btn-primary" {{#if ticket_trade_id}}disabled{{/if}}         
           data-ticket_id="{{this.ticket_id}}" data-ticket_name="{{this.ticket_name}}" 
           data-location="{{this.location}}" data-description="{{this.description}}"
           data-price="{{this.price}}" data-owner_name="{{this.user.displayName}}"

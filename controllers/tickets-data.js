@@ -1,5 +1,4 @@
 const db = require('../models');
-const {table} = require('table');
 var Users = require('./user-data');
 
 class Tickets {

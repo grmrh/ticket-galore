@@ -54,6 +54,19 @@ exports.tickeTradetDelete = function (req, res) {
   }).then(dbTicketTrade => res.json(dbTicketTrade));
 }
 
+// respond to PUT /api/tickets
+exports.ticketTradeUpdate = function (req, res) {
+  db.ticketTrade.update(
+    req.body, 
+    {
+      where: {
+        ticket_trade_id: req.body.id
+      }
+    }).then(function(dbTicketTrade) {
+      res.json(dbTicketTrade);
+    });
+  };
+
 // respond to GET /api/ticketTrades/:id
 exports.tickeTradetGetById = function (req, res) {
   db.ticketTrade.FindOne({

@@ -5,6 +5,7 @@ const express = require("express"),
   passport = require("passport"),
   path = require('path'),
   expressSession = require('express-session'),
+  handlebarsHelpers = require('handlebars-helpers')();
   exphbs = require("express-handlebars"),
   moment = require("moment");
   cookieSession = require('cookie-session');
@@ -23,7 +24,8 @@ var hbsEngine = exphbs.create({
   helpers: {
     formatDate: function(date, format) {
       return moment(date).format(format);
-    }
+    }, 
+    handlebarsHelpers
   }
 });
 

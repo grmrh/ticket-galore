@@ -1,6 +1,5 @@
 const db = require('../models');
-const {table} = require('table');
-const sessionStorage = require('sessionstorage');
+//const sessionStorage = require('sessionstorage');
 
 class Users {
   
@@ -112,25 +111,25 @@ class Users {
       });
   };
   
-  setUserToSessionStorage(userInfo) {
-    sessionStorage.clear();
-    sessionStorage.setItem('user_id', userInfo.user_id);
-    sessionStorage.setItem('displayName', userInfo.displayName);
-    sessionStorage.setItem('email', userInfo.email);
-    sessionStorage.setItem('user_identity', userInfo.user_identity);
-    //sessionStorage.setItem('definitions', JSON.stringify(definitions));
-  }
+  // setUserToSessionStorage(userInfo) {
+  //   sessionStorage.clear();
+  //   sessionStorage.setItem('user_id', userInfo.user_id);
+  //   sessionStorage.setItem('displayName', userInfo.displayName);
+  //   sessionStorage.setItem('email', userInfo.email);
+  //   sessionStorage.setItem('user_identity', userInfo.user_identity);
+  //   //sessionStorage.setItem('definitions', JSON.stringify(definitions));
+  // }
 
-  getUserFromSessionStorage() {
-    return {
-      'user_id': sessionStorage.getItem('user_id'),
-      'displayName': sessionStorage.getItem('displayName'),     
-      'email': sessionStorage.getItem('email'),
-      'user_identity': sessionStorage.getItem('user_identity')
-      //definitions: JSON.parse(sessionStorage.getItem('definitions')),
-      //searchedTime: sessionStorage.getItem('searchedTime')
-    };
-  }
+  // getUserFromSessionStorage() {
+  //   return {
+  //     'user_id': sessionStorage.getItem('user_id'),
+  //     'displayName': sessionStorage.getItem('displayName'),     
+  //     'email': sessionStorage.getItem('email'),
+  //     'user_identity': sessionStorage.getItem('user_identity')
+  //     //definitions: JSON.parse(sessionStorage.getItem('definitions')),
+  //     //searchedTime: sessionStorage.getItem('searchedTime')
+  //   };
+  // }
 
 
   createUserInterest(userInterestInfo) {

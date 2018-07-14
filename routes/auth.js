@@ -90,7 +90,7 @@ const User = require('../models/user');
   var callbackURL;
   if (process.env.NODE_ENV == "heroku_production") {
     callbackURL = 'https://pacific-fortress-96034.herokuapp.com/auth/google/callback';
-  } else {
+  } else if (process.env.NODE_ENV == "development") {
     callbackURL = 'http://localhost:8080/auth/google/callback';
   }
 
@@ -102,6 +102,8 @@ const User = require('../models/user');
     },
     (req, accessToken, refreshToken, profile, done) => {
       // check if this user exists in the user table
+      console.log('passport.use ', profile);
+
       var users = new Users();
       users.getUserByUserIdentity(profile.id)
       .then(currentUser => {
@@ -121,13 +123,20 @@ const User = require('../models/user');
 
         } else {
           // if not, create user
-          var newUser = new User({
-            first_name: profile.givenName,
+         
+          // var newUser = new User({
+          //   first_name: profile.givenName,
+          //   last_name: profile.familyName, 
+          //   email: profile.email,
+          //   user_identity: profile.id,
+          //   displayName: profile.displayName
+          // });
+
+          var newUser = {first_name: profile.givenName,
             last_name: profile.familyName, 
             email: profile.email,
             user_identity: profile.id,
-            displayName: profile.displayName
-          });
+            displayName: profile.displayName};
 
           users.createUser(newUser)
            .then(newUser => {

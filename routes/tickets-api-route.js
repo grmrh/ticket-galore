@@ -16,6 +16,8 @@ router.get('/api/tickets/:id', (req, res) => tickets_api_controller.ticketById(r
 
 router.put('/api/tickets', (req, res) => tickets_api_controller.ticketUpdate(req, res));
 
+router.put('/api/tickets/ticketTrade', (req, res) => tickets_api_controller.ticketTradeUpdate(req, res));
+
 router.delete('/api/tickets/:id', (req, res) => tickets_api_controller.ticketDelete(req, res));
 
 router.get('/api/tickets/user/:id/userInterests', (req, res) => tickets_api_controller.userInterestsByUserId(req, res));

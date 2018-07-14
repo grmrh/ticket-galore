@@ -171,5 +171,17 @@ exports.userInterestsByUserId = function(req, res) {
   
 }
 
+exports.ticketTradeUpdate = function(req, res) {
+  var ticketTradeId = req.body.id;
+
+  db.ticket_trade.update(
+    req.body, 
+    {
+      where: {ticket_trade_id: ticketTradeId}
+    }).then(function(dbTicketTradeUpdated) {
+      res.json(dbTicketTradeUpdated);
+    })
+}
+
 
 

@@ -30,9 +30,9 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
 
-    event_name: {
+    message_in: {
       type: DataTypes.STRING,
-      notEmpty: true
+      allowNull: true
     }, 
 
     image_name: {
@@ -46,7 +46,7 @@ module.exports = function(sequelize, DataTypes) {
     },
 
     bid_ticket_id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: true
     },
 

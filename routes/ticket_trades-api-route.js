@@ -6,6 +6,6 @@ router.post('/api/ticketTrades', (req, res) => ticket_trades_api_controller.tick
 router.delete('/api/ticketTrades/:id', (req, res) => ticket_trades_api_controller.ticketTradeDelete(req, res));
 
 router.get('/api/ticketTrades/:id', (req, res) => ticket_trades_api_controller.ticketTradeGetById(req, res));
-
+router.put('/api/ticketTrades', (req, res) => ticket_trades_api_controller.ticketTradeUpdate(req, res));
 
 module.exports = router;

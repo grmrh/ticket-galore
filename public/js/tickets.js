@@ -26,9 +26,9 @@ $(function () {
           email: $('#email').val().trim(),
           lookup_event_id: Number($("#ticket_name").val().trim()),
           ticket_name: $("#ticket_name").text().trim(),
-          location: $("#location").val().trim(),
-          price: parseFloat($("#price").val().trim()),
-          description: $('#description').val().trim()
+          location: $("#ticket_location").val().trim(),
+          price: parseFloat($("#ticket-price").val()),
+          description: $('#ticket-description').val().trim()
         };
 
         console.log('new ticket to store \n', newTicket);
@@ -46,12 +46,12 @@ $(function () {
 
       $(".ticket-add").on("click", function(event) {
         event.preventDefault();
-        $('.ticket-add-form').removeAttr(".d-none").attr("class", "ticket-add-form d-block").fadein(1000);
+        $('.ticket-add-form').removeAttr(".d-none").attr("class", "ticket-add-form d-block");
         // $('.ticket-add-form').removeAttr(".d-none").attr(".d-block");
       })
 
       $(".create-ticket-form-reset").on("click", function() {
-        $(".create-ticket-form").trigger("reset").fadeout(1000);
+        $(".create-ticket-form").trigger("reset");
       })
 
       $(".create-ticket-form-cancel").on("click", function() {
@@ -107,9 +107,48 @@ $(function () {
 
       // })
 
+      // member can purchase the ticket from the market.
+      $(document).on("click", ".purchase", function(event) {
+        event.preventDefault();
+        $("#ticketNameToPurchase").text($(this).attr('data-ticketname'));
+        var ticketTradeId = $(this).data("ticket_trade_id");
+        //var bidTicketId = $(this).data('bid_ticket_id');
+        //$("#ticketTradeIdToPurchase").text(ticket_trade_id);
+        // var ticket_name = $(this).data("ticket_name");
+        $.ajax({
+          url: "/api/tickets/ticketTrade",
+          method: "PUT",
+          data: {id: ticketTradeId,
+                bid_status: "claimed"}
+        }).then(dbTicketUpdated => {
+          console.log(dbTicketUpdated);
+          location.reload();
+        })
+      })
+
+      // member can send interest the ticket from the market.
+      $(document).on("click", ".interest", function(event) {
+        event.preventDefault();
+        $("#ticketNameToInterest").text($(this).attr('data-ticketname'));
+        var ticketTradeId = $(this).data("ticket_trade_id");
+        //var bidTicketId = $(this).data('bid_ticket_id');
+        //$("#ticketTradeIdToPurchase").text(ticket_trade_id);
+        // var ticket_name = $(this).data("ticket_name");
+        $.ajax({
+          url: "/api/tickets/ticketTrade",
+          method: "PUT",
+          data: {id: ticketTradeId,
+                bid_status: "trade_progress"}
+        }).then(dbTicketUpdated => {
+          console.log(dbTicketUpdated);
+          location.reload();
+        })
+        // var ticket_name = $(this).data("ticket_name");
+      })
+
       // member can withdraw the ticket from the market.
       $(document).on("click", ".takeback-trade-ticket", function(event) {
-        //event.preventDefault();
+        event.preventDefault();
         $("#ticketNameToRemove").text($(this).attr('data-ticketname'));
         var ticket_trade_id = $(this).data("tickettradeid");
         $("#ticketTradeIdToRemove").text(ticket_trade_id);
@@ -324,27 +363,27 @@ $(function () {
       // })
 
 
-      var logoImage = [
-        "/images/pref_imgs/vikings.png",
-        "/images/pref_imgs/twins.png",
-        "/images/pref_imgs/timberwolves.png",
-        "/images/pref_imgs/wild.png",
-        "/images/pref_imgs/united.png",
-        "/images/pref_imgs/saints.png",
-        "/images/pref_imgs/lynx.png",
-        "/images/pref_imgs/gophers.png"
-      ]
+      // var logoImage = [
+      //   "/images/pref_imgs/vikings.png",
+      //   "/images/pref_imgs/twins.png",
+      //   "/images/pref_imgs/timberwolves.png",
+      //   "/images/pref_imgs/wild.png",
+      //   "/images/pref_imgs/united.png",
+      //   "/images/pref_imgs/saints.png",
+      //   "/images/pref_imgs/lynx.png",
+      //   "/images/pref_imgs/gophers.png"
+      // ]
 
-      var logoImageName = [
-        "Vikings",
-        "Twins",
-        "Timberwolves",
-        "Wilds",
-        "United",
-        "Saints",
-        "Lynx",
-        "Gophers"
-      ]
+      // var logoImageName = [
+      //   "Vikings",
+      //   "Twins",
+      //   "Timberwolves",
+      //   "Wilds",
+      //   "United",
+      //   "Saints",
+      //   "Lynx",
+      //   "Gophers"
+      // ]
 
       // ---------------------------------------------------------------------------------------
       // Loads images into modal for preference seletion 
@@ -356,7 +395,7 @@ $(function () {
 
           $(".test123").append(`<div class="img_container userPreferenceLogo">
             <input type="radio" name="pref" value="${logoImageName[i]}">
-            <button class="imageButtonToFilter" ><img src="${logoImage[i]}" alt="${logoImageName[i]}" id = "${imageClass}" class="image"></button>
+            <img src="${logoImage[i]}" alt="${logoImageName[i]}" id = "${imageClass}" class="image">
             <div class="middle">
             <div class="text">${logoImageName[i]}</div>
             </div>
@@ -378,8 +417,8 @@ $(function () {
         var val = $('input[name=pref]:checked').val();
         imageArray.push(val)
         $("#menu").append(`<li><input type="radio" name="pref" value="${val}">
-                      <img src="/images/pref_imgs/${val}.png" alt=""height="10%" width="10%">
-                      </li>`)
+            <img src="/images/pref_imgs/${val}.png" alt=""height="10%" width="10%">
+            </li>`)
         //alert("this is your array " + imageArray)
 
         // add this ticket to user preference
@@ -388,12 +427,12 @@ $(function () {
       });
 
       // adds submit button for adding image to the preference div
-      $("#submit").click(function () {
-        $("#submit2").remove();
-        $("#menu").prepend(`</div>
-          <button id = "submit2" class="btn btn-danger" data-dismiss="modal">Submit</button>
-            </div>`)
-      });
+      // $("#submit").click(function () {
+      //   $("#submit2").remove();
+      //   $("#menu").prepend(`</div>
+      //     <button id = "submit2" class="btn btn-danger" data-dismiss="modal">Submit</button>
+      //       </div>`)
+      // });
       //--------------------------------------------------------------------------------------
       //renders the users tickets to buy 
       $("body").on("click", "#submit2", function () {

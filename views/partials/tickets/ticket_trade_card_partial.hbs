@@ -11,7 +11,10 @@
  
   <div class="card-body">
     <h4>${{bid_price}}</h4>
-    <button class="btn btn-outline-success"><a href="#" class="card-link">Purchase</a></button>
+    <button class="btn btn-outline-primary purchase" data-toggle="modal" data-target=".ticketPurchaseModal" 
+      data-ticket_name="{{this.ticket_name}}"  data-ticket_trade_id="{{this.ticket_trade_id}}"><a class="card-link">Purchase</a></button>
+    <button class="btn btn-outline-primary interest" data-toggle="modal" data-target=".ticketInterestModal" 
+     data-ticket_name="{{this.ticket_name}}"  data-ticket_trade_id="{{this.ticket_trade_id}}"><a class="card-link">Interest</a></button>
   </div>
   <div class="card-footer text-muted">
     last bid: {{formatDate bid_time "long"}};
