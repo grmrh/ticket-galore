@@ -8,10 +8,11 @@ This application allows the user to post the sport tickets to sell in the site "
 * node
 * express
 * mysql, sequelize
-* handlebars
+* handlebars, handlebars-helper
 * passport, passport-google-oauth2
 * express-session, cookie-session
 * mocha, chai, chai-http
+* util: path, moment
 
 ## Design architecture
 * MVC with
